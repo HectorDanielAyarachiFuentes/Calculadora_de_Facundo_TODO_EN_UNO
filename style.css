@@ -1,9 +1,8 @@
-/* --- Fuentes Personalizadas (Estilo del primer archivo) --- */
-/* Importa las fuentes Fredoka One y Pixelify Sans */
+/* --- Fuentes Personalizadas (CORREGIDO) --- */
+/* Se reestablece la importación original para que Fredoka One y Pixelify Sans funcionen */
 @import url('https://fonts.googleapis.com/css2?family=Mozilla+Text:wght@200..700&display=swap');
 
-
-/* --- Variables Globales de Color (Del primer archivo) --- */
+/* --- Variables Globales de Color --- */
 :root {
     --bg-main: #121212;
     --bg-grid-lines: rgba(200, 200, 200, 0.04);
@@ -28,7 +27,7 @@
     --history-border-color: #444;
 }
 
-/* --- Estilos Base y Reseteo (Del primer archivo) --- */
+/* --- Estilos Base y Reseteo --- */
 * {
     margin: 0;
     padding: 0;
@@ -55,16 +54,18 @@ button {
     font-family: inherit;
 }
 
-/* --- Estructura Principal de la Calculadora (Del primer archivo) --- */
+/* --- Estructura Principal de la Calculadora --- */
 #contenedor {
     position: relative;
     opacity: 0;
     transition: opacity 1s;
     width: 100%;
     max-width: 480px;
+    /* CORRECCIÓN: Estilo por defecto para alinear en escritorio */
+    padding-left: 1em;
 }
 
-/* --- Header Mejorado (Del primer archivo) --- */
+/* --- Header Mejorado --- */
 header {
     margin-bottom: 25px;
     text-align: center;
@@ -79,24 +80,25 @@ header .subtitle { font-size: 0.8rem; color: var(--color-title-1); margin-top: 1
 header .subtitle a { color: var(--btn-special-bg); text-decoration: underline; font-weight: bold; transition: color 0.2s ease; }
 header .subtitle a:hover { color: var(--color-title-2); }
 
-/* --- Display y Contenedor del Teclado (Del primer archivo) --- */
+/* --- Display y Contenedor del Teclado --- */
 #display {
     font-family: 'Fredoka One', cursive, monospace;
     background-color: var(--bg-display); color: var(--color-display-text); text-align: right; width: 100%;
     padding: 20px; font-size: 2.2rem; overflow: hidden; border-radius: 10px; margin-bottom: 15px;
     min-height: 65px; word-wrap: break-word;
+    /* CORRECCIÓN: Se mantiene el flujo normal, como indicaba el código original */
+    margin-left: 0;
 }
 #cuerpoteclado {
     position: relative; background-color: var(--bg-keyboard); width: 100%; aspect-ratio: 1 / 1;
     overflow: hidden; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* --- Teclado y Botones (Del primer archivo, adaptado a nombres) --- */
+/* --- Teclado y Botones --- */
 #teclado {
     position: absolute; top: 0; width: 100%; height: 100%; transition: top 0.5s ease-in-out;
     display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 2px;
 }
-/* Se mantiene tu clase para ocultar, por si la usas en JS */
 #teclado.keyboard--hidden {
     top: 100%; /* Desliza el teclado hacia abajo */
 }
@@ -116,21 +118,19 @@ header .subtitle a:hover { color: var(--color-title-2); }
 }
 #teclado button:disabled { background-color: var(--btn-disabled-bg) !important; color: var(--btn-disabled-text); cursor: not-allowed; }
 
-/* Colores y tamaños específicos de botones (Del primer archivo) */
+/* Colores y tamaños específicos de botones */
 #tpan { grid-column: span 2; background-color: var(--btn-special-bg); font-size: 0.8em; font-family: 'jellyregular'; }
 #tcal { grid-column: span 3; background-color: var(--btn-equal-bg); font-family: 'jellyregular'; }
 #t0 { grid-column: span 2; }
-/* Se aplican los estilos de número y fuente del primer archivo */
 #t1, #t2, #t3, #t4, #t5, #t6, #t7, #t8, #t9, #t0, #tcom { background-color: var(--btn-num-bg); font-family: 'Fredoka One', cursive; }
 #tmas, #tmen, #tpor, #tdiv, #tc, #tdel { background-color: var(--btn-op-bg); font-family: 'jellyregular'; }
 #tpri, #trai { background-color: var(--btn-equal-bg); font-family: 'jellyregular'; }
 
-/* --- Pantalla de Salida (Algoritmos) (Adaptado) --- */
+/* --- Pantalla de Salida (Algoritmos) --- */
 #salida {
     position: absolute; top: -100%; background-color: #111; width: 100%; height: 100%;
     transition: top 0.5s ease-in-out; padding: 15px; overflow: auto;
 }
-/* Se mantiene tu clase para mostrar, por si la usas en JS */
 #salida.output-screen--visible {
     top: 0;
 }
@@ -140,7 +140,6 @@ header .subtitle a:hover { color: var(--color-title-2); }
     transition: top 0.5s ease-in-out; display: flex; justify-content: space-between;
     align-items: flex-end; padding: 10px; pointer-events: none;
 }
-/* Se mantiene tu clase para mostrar, por si la usas en JS. Cambiado top a -100% para que coincida con #salida */
 #divvolver.bottom-nav--visible {
     top: 0;
 }
@@ -155,29 +154,22 @@ header .subtitle a:hover { color: var(--color-title-2); }
 
 
 /* --- ESTILOS DE SALIDA MAPEADOS --- */
-/* Mapeo de .caja, .caja2 etc. a tus clases .output-grid__cell--... */
 .output-grid__cell {
     position: absolute;
     text-align: center;
-    font-family: 'Fredoka One', cursive; /* APLICANDO FREDOKA ONE COMO EN EL PRIMER CSS */
+    font-family: 'Fredoka One', cursive;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.output-grid__cell--dividendo,
-.output-grid__cell--producto,
-.output-grid__cell--resto {
-    font-family: 'Fredoka One', cursive; /* Aseguramos la fuente para todos */
-}
 .output-grid__cell--dividendo { color: var(--output-caja-1); }
 .output-grid__cell--divisor { color: var(--output-caja-2); }
 .output-grid__cell--cociente { color: var(--output-caja-3); }
-.output-grid__cell--producto { color: var(--output-caja-3); } /* Mismo color que cociente */
+.output-grid__cell--producto { color: var(--output-caja-3); }
 .output-grid__cell--resto { color: var(--output-caja-4); }
 
 .output-grid__line { position: absolute; background-color: #444; }
 
-/* Mapeo de .error a tu clase de error */
 .output-screen__error-message {
     color: var(--output-caja-1);
     font-size: 1.2rem;
@@ -187,7 +179,7 @@ header .subtitle a:hover { color: var(--color-title-2); }
 
 
 /* ============================================== */
-/* --- SECCIÓN DEL HISTORIAL (Estilo del primero, adaptado a nombres) --- */
+/* --- SECCIÓN DEL HISTORIAL --- */
 /* ============================================== */
 #history-toggle-btn {
     position: fixed;
@@ -225,7 +217,6 @@ header .subtitle a:hover { color: var(--color-title-2); }
     padding-bottom: env(safe-area-inset-bottom, 0px);
     box-sizing: border-box;
 }
-/* Se usa tu clase para abrir el panel */
 #history-panel.history-panel--open { right: 0; }
 
 .history-header {
@@ -235,7 +226,7 @@ header .subtitle a:hover { color: var(--color-title-2); }
     padding: 15px env(safe-area-inset-right, 20px) 15px env(safe-area-inset-left, 20px);
     background-color: var(--history-header-bg);
     border-bottom: 1px solid var(--history-border-color);
-    padding-right: 90px; /* Espacio para el botón de toggle, evitando superposición */
+    padding-right: 90px;
 }
 .history-header h2 { margin: 0; font-size: 1.2em; color: #eee; }
 
@@ -246,7 +237,6 @@ header .subtitle a:hover { color: var(--color-title-2); }
 #clear-history-btn:hover { background: #e74c3c; }
 
 #history-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; }
-/* Se usa tu nombre de clase .history-panel__item en lugar de li */
 .history-panel__item {
     padding: 15px 20px;
     border-bottom: 1px solid #333;
@@ -255,7 +245,6 @@ header .subtitle a:hover { color: var(--color-title-2); }
 }
 .history-panel__item:hover { background-color: #2c3e50; }
 
-/* Mapeo de las clases de texto del historial */
 .history-panel__input {
     display: block; font-size: 1.1em; color: #ecf0f1; margin-bottom: 5px;
     font-family: 'Fredoka One', cursive, monospace;
@@ -267,15 +256,14 @@ header .subtitle a:hover { color: var(--color-title-2); }
 }
 
 /* ============================================== */
-/* --- DISEÑO RESPONSIVE PARA MÓVILES (Fusión de ambos) --- */
+/* --- DISEÑO RESPONSIVE PARA MÓVILES --- */
 /* ============================================== */
 @media (max-width: 600px) {
-    /* Estilos base para layout del segundo archivo */
     body { padding: 10px env(safe-area-inset-right, 10px) 10px env(safe-area-inset-left, 10px); }
+    /* CORRECCIÓN: Se elimina el padding para que ocupe todo el ancho en móviles */
     #contenedor { width: 100% !important; max-width: none !important; padding-left: 0 !important; }
     #cuerpoteclado { width: 100% !important; }
 
-    /* Estilos visuales del primer archivo */
     header h1 { font-size: 12vw !important; letter-spacing: 1px !important; }
     header .subtitle { font-size: 3.5vw !important; }
     #display { font-size: 10vw !important; padding: 15px; }
@@ -284,8 +272,6 @@ header .subtitle a:hover { color: var(--color-title-2); }
     #botexp, #botnor { font-size: 3.5vw !important; padding: 8px; }
     .output-screen__error-message { font-size: 4.5vw !important; padding-top: 25%; }
     #salida { font-size: 5vw !important; }
-
-    /* Ajuste de tamaño para los números de salida (como .caja) */
     .output-grid__cell { font-size: 8vw !important; }
 }
 
@@ -299,32 +285,19 @@ header .subtitle a:hover { color: var(--color-title-2); }
     #volver { font-size: 6vw !important; }
     #botexp, #botnor { font-size: 3.2vw !important; padding: 7px; }
     .output-screen__error-message { font-size: 4vw !important; }
-
-    /* Ajuste fino para los números de salida */
     .output-grid__cell { font-size: 7vw !important; }
 }
 
 
-/* --- ANIMACIONES (Del primer archivo, adaptado a nombres) --- */
+/* --- ANIMACIONES --- */
 @keyframes flash-animation {
-    0% { background-color: #2c3e50; } /* Color de hover */
-    50% { background-color: #3498db; } /* Un azul brillante */
+    0% { background-color: #2c3e50; }
+    50% { background-color: #3498db; }
     100% { background-color: #2c3e50; }
 }
-/* Clase que se aplicará al elemento del historial duplicado */
 .history-item-highlight {
     animation: flash-animation 1s ease-in-out;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
