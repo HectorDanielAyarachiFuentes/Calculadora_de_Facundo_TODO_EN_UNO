@@ -77,6 +77,7 @@ button {
     transition: opacity 1s;
     width: 100%;
     max-width: 480px;
+    padding-left: 1em; /* CORRECCIÓN: Estilo por defecto movido aquí para mayor claridad */
 }
 
 /* --- Header Mejorado --- */
@@ -99,6 +100,7 @@ header .subtitle a:hover { color: var(--color-title-2); }
     background-color: var(--bg-display); color: var(--color-display-text); text-align: right; width: 100%;
     padding: 20px; font-size: 2.2rem; overflow: hidden; border-radius: 10px; margin-bottom: 15px;
     min-height: 65px; word-wrap: break-word;
+    margin-left: 0; /* CORRECCIÓN: Se mantiene el flujo normal, como indicaba el código original */
 }
 #cuerpoteclado {
     position: relative; background-color: var(--bg-keyboard); width: 100%; aspect-ratio: 1 / 1;
@@ -199,7 +201,7 @@ header .subtitle a:hover { color: var(--color-title-2); }
 #history-panel.history-panel--open { right: 0; }
 
 .history-header {
-    display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;
+    display: flex; justify-content: space-between; align-items: center; padding: 15px 90px 15px 20px; /* Aumentado el padding derecho */
     background-color: var(--history-header-bg); border-bottom: 1px solid var(--history-border-color);
 }
 .history-header h2 { margin: 0; font-size: 1.2em; color: #eee; }
@@ -315,31 +317,15 @@ header .subtitle a:hover { color: var(--color-title-2); }
         display: none;
     }
 
-      /* --- Calculadora ancha --- */
+    /* --- Calculadora ancha --- */
+    #contenedor {
+        padding-left: 0 !important;
+    }
 
-#contenedor {
-  padding-left: 0 !important;
+    #display {
+        margin-left: 0 !important;
+    }
 }
-
-#display {
-  margin-left: 0 !important;
-}
-
-
-
-}
-
-
-    /* --- Centrar contenedor y display --- */
-
-#contenedor {
-  padding-left: 1em; /* relativo al tamaño de fuente */
-}
-
-#display {
-  margin-left: 0; /* que siga el flujo sin desplazarse */
-}
-
 
 
 
