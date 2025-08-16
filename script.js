@@ -2229,3 +2229,14 @@ document.addEventListener("visibilitychange", () => {
 // =======================================================
 // --- FIN: Contenido de main.js (Lógica Principal) ---
 // =======================================================
+
+
+
+
+
+
+
+
+
+
+
