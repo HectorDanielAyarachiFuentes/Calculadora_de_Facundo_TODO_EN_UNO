@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Facundo TODO EN UNO</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">    
+
+    <meta name="description"
+        content="La Calculadora de Facundo: tu herramienta web moderna, rápida y con una interfaz atractiva. Resuelve todas tus operaciones matemáticas y explora los algoritmos más frecuentes.">
+    <meta name="keywords"
+        content="calculadora, escolar, algoritmos, cálculo, operaciones, matematicas, facundo, moderna, rapida">
+    <meta name="author" content="Hector Daniel Ayarachi Fuentes">
+
+    <meta name="theme-color" content="#66FF66">
+
+    <!-- Favicon SVG que se ve bien en modo claro y oscuro -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='5' y='5' width='90' height='90' rx='15' fill='%2366FF66'/><rect x='25' y='30' width='50' height='10' fill='%23000000'/><rect x='25' y='60' width='50' height='10' fill='%23000000'/></svg>">
+    
+    <title>Calculadora Facundo 🧮</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="contenedor">
+        
+       <header>
+            <h1>LA<br>CALCULADORA<br>DE <span>FACUNDO</span></h1>
+            <p class="subtitle">Un proyecto de <a href="https://github.com/HectorDanielAyarachiFuentes" target="_blank">Facundo Killer</a></p>
+        </header>
+        
+        <div id="display">0</div>
+
+        <div id="cuerpoteclado">
+            <div id="teclado">
+                <!-- Fila 1 -->
+                <button id="tpan" class="btn btn--special btn--span-2" data-action="view-screen">Ver<br>Pantalla</button>
+                <button id="tcal" class="btn btn--equal btn--span-3" data-action="calculate" disabled>=</button>
+                
+                <!-- Fila 2 -->
+                <button id="t7" class="btn btn--num keyboard__button--number" data-value="7">7</button>
+                <button id="t8" class="btn btn--num keyboard__button--number" data-value="8">8</button>
+                <button id="t9" class="btn btn--num keyboard__button--number" data-value="9">9</button>
+                <button id="tmas" class="btn btn--operator" data-value="+" disabled>+</button>
+                <button id="tmen" class="btn btn--operator" data-value="-" disabled>-</button>
+                
+                <!-- Fila 3 -->
+                <button id="t4" class="btn btn--num keyboard__button--number" data-value="4">4</button>
+                <button id="t5" class="btn btn--num keyboard__button--number" data-value="5">5</button>
+                <button id="t6" class="btn btn--num keyboard__button--number" data-value="6">6</button>
+                <button id="tpor" class="btn btn--operator" data-value="x" disabled>x</button>
+                <button id="tdiv" class="btn btn--operator" data-value="/" disabled>/</button>
+                
+                <!-- Fila 4 -->
+                <button id="t1" class="btn btn--num keyboard__button--number" data-value="1">1</button>
+                <button id="t2" class="btn btn--num keyboard__button--number" data-value="2">2</button>
+                <button id="t3" class="btn btn--num keyboard__button--number" data-value="3">3</button>
+                <button id="tpri" class="btn btn--equal" data-action="primos" disabled>|</button>
+                <button id="trai" class="btn btn--equal" data-action="raiz" disabled>rc</button>
+                
+                <!-- Fila 5 -->
+                <button id="t0" class="btn btn--num btn--span-2 keyboard__button--number" data-value="0">0</button>
+                <button id="tcom" class="btn btn--num keyboard__button--number" data-value=",">,</button>
+                <button id="tc" class="btn btn--operator" data-action="clear">C</button>
+                <button id="tdel" class="btn btn--operator" data-action="delete"><</button>
+            </div>
+
+            <div id="salida" class="slide-screen"></div>
+
+            <div id="divvolver" class="slide-screen">
+                <button id="volver" class="nav-btn" data-action="hide-screen">J</button>
+                <button id="botexp" class="nav-btn" data-action="divide-normal">DIV EXPAND.</button>
+                <button id="botnor" class="nav-btn" data-action="divide-expanded">DIV NORMAL</button>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Botón para mostrar/ocultar el historial -->
+    <button id="history-toggle-btn" title="Historial">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13,3A9,9,0,0,0,4,12H1L4.89,15.89L4.96,16.03L9,12H6A7,7,0,0,1,13,5V8L18,4L13,0V3M12,12.5A1.5,1.5,0,0,0,10.5,14A1.5,1.5,0,0,0,12,15.5A1.5,1.5,0,0,0,13.5,14A1.5,1.5,0,0,0,12,12.5Z"/></svg>
+    </button>
+
+    <!-- Panel del Historial (inicialmente oculto) -->
+    <div id="history-panel">
+        <div class="history-header">
+            <h2>Historial</h2>
+            <button id="clear-history-btn">Limpiar</button>
+        </div>
+        <ul id="history-list">
+            <!-- Las entradas del historial se añadirán aquí con JS -->
+        </ul>
+    </div>
+    
+    <!-- Guarda el código JS unificado en un archivo llamado "script.js" y enlázalo aquí -->
+    <script src="script.js"></script>
+</body>
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>

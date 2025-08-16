@@ -1,0 +1,614 @@
+/* --- Fuentes Personalizadas --- */
+@font-face {
+    font-family: 'jellyregular';
+    src: url('jelly-webfont.woff2') format('woff2'), url('jelly-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'kurzetstypekurzetstype';
+    src: url('kurzetstype_v1.4-webfont.woff2') format('woff2'), url('kurzetstype_v1.4-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'arrow_7regular';
+    src: url('arrow_7-webfont.woff2') format('woff2'), url('arrow_7-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* --- Variables Globales de Color --- */
+:root {
+    --bg-main: #121212;
+    --bg-grid-lines: rgba(200, 200, 200, 0.04);
+    --bg-display: #1a1a1a;
+    --bg-keyboard: #000;
+    --color-title-1: #e84d4d;
+    --color-title-2: #4de89d;
+    --color-display-text: #f0e68c;
+    --btn-num-bg: #FFFF66;
+    --btn-op-bg: red;
+    --btn-special-bg: #6666FF;
+    --btn-equal-bg: #66FF66;
+    --btn-text-color: #000;
+    --btn-disabled-bg: #333;
+    --btn-disabled-text: #666;
+    --output-dividendo: #e88d8d;    /* Rojo claro para el número a dividir */
+    --output-divisor: #8de89d;      /* Verde claro para el divisor o factor primo */
+    --output-cociente: #8d8de8;    /* Azul claro para cocientes y productos */
+    --output-resto: #e8e88d;        /* Amarillo claro para restos */
+    --history-panel-bg: #1e1e1e;
+    --history-header-bg: #2a2a2a;
+    --history-border-color: #444;
+}
+
+/* --- Estilos Base y Reseteo --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    background-color: var(--bg-main);
+    background-image:
+        repeating-linear-gradient(90deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px),
+        repeating-linear-gradient(0deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px);
+    padding: 20px;
+    font-family: 'kurzetstypekurzetstype', sans-serif;
+}
+
+button {
+    outline: none;
+    border: none;
+    font-family: inherit;
+}
+
+/* --- Estructura Principal de la Calculadora --- */
+#contenedor {
+    position: relative;
+    opacity: 0;
+    transition: opacity 1s;
+    width: 100%;
+    max-width: 480px;
+}
+
+/* --- Header Mejorado --- */
+header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+header h1 {
+    font-family: "Arial Black", "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 1.5rem; font-weight: bold; line-height: 1; letter-spacing: 2px; color: var(--color-title-1);
+    text-transform: uppercase; text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+header h1 span { color: var(--color-title-2); }
+header .subtitle { font-size: 0.8rem; color: var(--color-title-1); margin-top: 15px; opacity: 0.8; }
+header .subtitle a { color: var(--btn-special-bg); text-decoration: underline; font-weight: bold; transition: color 0.2s ease; }
+header .subtitle a:hover { color: var(--color-title-2); }
+
+/* --- Display y Contenedor del Teclado --- */
+#display {
+    background-color: var(--bg-display); color: var(--color-display-text); text-align: right; width: 100%;
+    padding: 20px; font-size: 2.2rem; overflow: hidden; border-radius: 10px; margin-bottom: 15px;
+    min-height: 65px; word-wrap: break-word;
+}
+#cuerpoteclado {
+    position: relative; background-color: var(--bg-keyboard); width: 100%; aspect-ratio: 1 / 1;
+    overflow: hidden; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Teclado y Botones --- */
+#teclado {
+    position: absolute; top: 0; width: 100%; height: 100%; transition: top 0.5s ease-in-out;
+    display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 2px;
+}
+#teclado.keyboard--hidden {
+    top: 100%; /* Desliza el teclado hacia abajo */
+}
+
+#teclado button {
+    font-size: 1.4rem; color: var(--btn-text-color); cursor: pointer; display: flex; justify-content: center;
+    align-items: center; padding: 0; border: 2px solid #000; font-family: 'jellyregular'; transition: transform 0.1s ease;
+}
+@keyframes arcoiris {
+    0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
+}
+#teclado button:not(:disabled):hover {
+    background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+    background-size: 200% 200%;
+    animation: arcoiris 2s linear infinite;
+    transform: scale(1.05);
+}
+#teclado button:disabled { background-color: var(--btn-disabled-bg) !important; color: var(--btn-disabled-text); cursor: not-allowed; }
+
+/* Colores y tamaños específicos de botones */
+#tpan { grid-column: span 2; background-color: var(--btn-special-bg); font-size: 0.8em; }
+#tcal { grid-column: span 3; background-color: var(--btn-equal-bg); }
+#t0 { grid-column: span 2; }
+.keyboard__button--number { background-color: var(--btn-num-bg); }
+#tmas, #tmen, #tpor, #tdiv, #tc, #tdel { background-color: var(--btn-op-bg); }
+#tpri, #trai { background-color: var(--btn-equal-bg); }
+
+/* --- Pantalla de Salida (Algoritmos) --- */
+#salida {
+    position: absolute; top: -100%; background-color: #111; width: 100%; height: 100%;
+    transition: top 0.5s ease-in-out; padding: 15px; overflow: auto;
+}
+#salida.output-screen--visible {
+    top: 0; /* Muestra la pantalla de salida */
+}
+
+#divvolver {
+    position: absolute; top: 100%; left: 0; width: 100%;
+    transition: top 0.5s ease-in-out; display: flex; justify-content: space-between;
+    align-items: flex-end; padding: 10px; pointer-events: none;
+}
+#divvolver.bottom-nav--visible {
+    top: 0; /* Muestra la barra de navegación inferior */
+}
+
+#volver, #botexp, #botnor {
+    pointer-events: all; color: rgba(255, 255, 255, 0.4); background-color: rgba(255, 255, 255, 0.05);
+    padding: 10px; border-radius: 5px; cursor: pointer; transition: all 0.2s;
+}
+#volver:hover, #botexp:hover, #botnor:hover { background-color: rgba(255, 255, 255, 0.1); color: white; }
+#volver { font-family: 'arrow_7regular'; font-size: 1.5rem; }
+#botexp, #botnor { font-family: 'jellyregular'; display: none; }
+
+/* --- Estilos para Elementos Dinámicos en la Pantalla de Salida --- */
+.output-grid__cell {
+    position: absolute;
+    text-align: center;
+    font-family: 'kurzetstypekurzetstype', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.output-grid__cell--dividendo { color: var(--output-dividendo); }
+.output-grid__cell--divisor { color: var(--output-divisor); }
+.output-grid__cell--cociente { color: var(--output-cociente); }
+.output-grid__cell--producto { color: var(--output-cociente); } /* Usamos el mismo color que el cociente */
+.output-grid__cell--resto { color: var(--output-resto); }
+.output-grid__cell--suma-intermedia { color: #888; } /* Color para las sumas llevadas */
+.output-grid__line { position: absolute; background-color: #444; }
+
+.output-screen__error-message { color: var(--output-dividendo); font-size: 1.2rem; text-align: center; padding: 20px; }
+
+/* --- SECCIÓN DEL HISTORIAL --- */
+#history-toggle-btn {
+    position: fixed; top: 20px; right: 20px; z-index: 1001;
+    background-color: #333; border: 1px solid #555; border-radius: 50%; width: 50px; height: 50px;
+    cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.3s;
+}
+#history-toggle-btn:hover { background-color: var(--btn-equal-bg); transform: scale(1.1); }
+#history-toggle-btn svg { width: 28px; height: 28px; fill: #eee; }
+
+#history-panel {
+    position: fixed; top: 0; right: -100%; width: 350px; max-width: 100vw; height: 100dvh;
+    background-color: var(--history-panel-bg); box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 1000; display: flex; flex-direction: column; transition: right 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+#history-panel.history-panel--open { right: 0; }
+
+.history-header {
+    display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;
+    background-color: var(--history-header-bg); border-bottom: 1px solid var(--history-border-color);
+}
+.history-header h2 { margin: 0; font-size: 1.2em; color: #eee; }
+#clear-history-btn {
+    background: var(--color-title-1); border: none; color: white; padding: 8px 15px; border-radius: 5px;
+    cursor: pointer; font-size: 0.9em; transition: background-color 0.2s;
+}
+#clear-history-btn:hover { background: #e74c3c; }
+
+#history-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; }
+.history-panel__item { padding: 15px 20px; border-bottom: 1px solid #333; cursor: pointer; transition: background-color 0.2s; }
+.history-panel__item:hover { background-color: #2c3e50; }
+.history-panel__input { display: block; font-size: 1.1em; color: #ecf0f1; margin-bottom: 5px; font-family: monospace; word-wrap: break-word; }
+.history-panel__result { display: block; font-size: 1.3em; color: var(--btn-equal-bg); font-weight: bold; text-align: right; font-family: monospace; }
+
+/* --- ANIMACIONES --- */
+@keyframes flash-animation { 0% { background-color: #2c3e50; } 50% { background-color: #3498db; } 100% { background-color: #2c3e50; } }
+.history-item-highlight { animation: flash-animation 1.5s ease-in-out; }
+
+@keyframes fade-in-scale { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+.animate-fade-in-scale { animation: fade-in-scale 0.5s ease-out forwards; }
+
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.pulse { animation: pulse 0.5s ease-in-out; }
+
+@media (max-width: 600px) {
+
+    /* --- Variables específicas para móvil --- */
+    :root {
+        --floating-btn-size-mobile: 60px;
+        --floating-btn-margin-mobile: 10px;
+    }
+
+    /* --- Reset y base para móvil --- */
+    html { box-sizing: border-box; }
+    *, *:before, *:after { box-sizing: inherit; }
+
+    body {
+        margin: 0;
+        padding: env(safe-area-inset-top, 10px) env(safe-area-inset-right, 10px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 10px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .main-content-wrapper { padding-top: 0; }
+
+    /* --- Layout de la calculadora en móvil --- */
+    .calculator-container {
+        width: 100% !important;
+        max-width: none !important;
+        margin-bottom: 0;
+        flex-grow: 1;
+    }
+    .keyboard-container {
+        width: 100% !important;
+        height: auto !important;
+        flex-grow: 1;
+    }
+    .keyboard { height: 100%; }
+
+    /* --- Componentes en móvil --- */
+    .display {
+        font-size: 10vw !important;
+        padding: 15px;
+        flex-shrink: 0;
+    }
+    .output-screen { font-size: 5vw !important; }
+    .keyboard__button { font-size: 6vw; }
+    .bottom-nav__button--arrow { font-size: 7vw !important; }
+    #botexp, #botnor { font-size: 3.5vw !important; padding: 8px; }
+
+    /* --- Encabezado en móvil --- */
+    header { flex-shrink: 0; }
+    header h1 { font-size: 12vw !important; letter-spacing: 1px !important; }
+    header .subtitle { font-size: 3.5vw !important; }
+    .output-screen__error-message { font-size: 4.5vw !important; padding-top: 25%; }
+
+    /* --- Componentes flotantes y Header del Historial en móvil --- */
+    .history-toggle-btn,
+    .sidebar-wrapper {
+        top: calc(env(safe-area-inset-top, 10px) + var(--floating-btn-margin-mobile));
+    }
+
+    .history-toggle-btn { right: var(--floating-btn-margin-mobile); }
+    .sidebar-wrapper { left: var(--floating-btn-margin-mobile); }
+
+    .history-toggle-btn,
+    .sidebar-wrapper .bubble-main {
+        width: var(--floating-btn-size-mobile);
+        height: var(--floating-btn-size-mobile);
+    }
+    .history-toggle-btn svg {
+        width: 50%; /* Proporcional al botón */
+        height: 50%;
+    }
+    .bubble-btn {
+        width: 52px;
+        height: 52px;
+    }
+    .bubble-sub {
+        width: 45px;
+        height: 45px;
+    }
+
+    .history-panel__header {
+        padding-left: calc(var(--floating-btn-size-mobile) + var(--floating-btn-margin-mobile) + 10px);
+        padding-right: calc(var(--floating-btn-size-mobile) + var(--floating-btn-margin-mobile) + 10px);
+        justify-content: flex-start;
+    }
+
+    /* --- Ocultar Footer en móvil --- */
+    .main-footer {
+        display: none;
+    }
+
+      /* --- Calculadora ancha --- */
+
+#contenedor {
+  padding-left: 0 !important;
+}
+
+#display {
+  margin-left: 0 !important;
+}
+
+
+
+}
+
+
+    /* --- Centrar contenedor y display --- */
+
+#contenedor {
+  padding-left: 1em; /* relativo al tamaño de fuente */
+}
+
+#display {
+  margin-left: 0; /* que siga el flujo sin desplazarse */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //*Este css tambien es funcional podes cambiarlo si te gusta/*
+
+/*
+@font-face {
+    font-family: 'jellyregular';
+    src: url('jelly-webfont.woff2') format('woff2'), url('jelly-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'kurzetstypekurzetstype';
+    src: url('kurzetstype_v1.4-webfont.woff2') format('woff2'), url('kurzetstype_v1.4-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'arrow_7regular';
+    src: url('arrow_7-webfont.woff2') format('woff2'), url('arrow_7-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --bg-main: #121212;
+    --bg-grid-lines: rgba(200, 200, 200, 0.04);
+    --bg-display: #1a1a1a;
+    --bg-keyboard: #000;
+    --color-title-1: #e84d4d;
+    --color-title-2: #4de89d;
+    --color-display-text: #f0e68c;
+    --btn-num-bg: #FFFF66;
+    --btn-op-bg: red;
+    --btn-special-bg: #6666FF;
+    --btn-equal-bg: #66FF66;
+    --btn-text-color: #000;
+    --btn-disabled-bg: #333;
+    --btn-disabled-text: #666;
+    --output-dividendo: #e88d8d;
+    --output-divisor: #8de89d;
+    --output-cociente: #8d8de8;
+    --output-resto: #e8e88d;
+    --history-panel-bg: #1e1e1e;
+    --history-header-bg: #2a2a2a;
+    --history-border-color: #444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    background-color: var(--bg-main);
+    background-image:
+        repeating-linear-gradient(90deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px),
+        repeating-linear-gradient(0deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px);
+    padding: 20px;
+    font-family: 'kurzetstypekurzetstype', sans-serif;
+}
+
+button {
+    outline: none;
+    border: none;
+    font-family: inherit;
+}
+
+#contenedor {
+    position: relative;
+    opacity: 0;
+    transition: opacity 1s;
+    width: 100%;
+    max-width: 480px;
+}
+
+header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+header h1 {
+    font-family: "Arial Black", "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 1.5rem; font-weight: bold; line-height: 1; letter-spacing: 2px; color: var(--color-title-1);
+    text-transform: uppercase; text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+header h1 span { color: var(--color-title-2); }
+header .subtitle { font-size: 0.8rem; color: var(--color-title-1); margin-top: 15px; opacity: 0.8; }
+header .subtitle a { color: var(--btn-special-bg); text-decoration: underline; font-weight: bold; transition: color 0.2s ease; }
+header .subtitle a:hover { color: var(--color-title-2); }
+
+#display {
+    background-color: var(--bg-display); color: var(--color-display-text); text-align: right; width: 100%;
+    padding: 20px; font-size: 2.2rem; overflow: hidden; border-radius: 10px; margin-bottom: 15px;
+    min-height: 65px; word-wrap: break-word;
+}
+#cuerpoteclado {
+    position: relative; background-color: var(--bg-keyboard); width: 100%; aspect-ratio: 1 / 1;
+    overflow: hidden; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#teclado {
+    position: absolute; top: 0; width: 100%; height: 100%; transition: top 0.5s ease-in-out;
+    display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 2px;
+}
+#teclado.keyboard--hidden {
+    top: 100%;
+}
+
+#teclado button {
+    font-size: 1.4rem; color: var(--btn-text-color); cursor: pointer; display: flex; justify-content: center;
+    align-items: center; padding: 0; border: 2px solid #000; font-family: 'jellyregular'; transition: transform 0.1s ease;
+}
+@keyframes arcoiris {
+    0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
+}
+#teclado button:not(:disabled):hover {
+    background: linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+    background-size: 200% 200%;
+    animation: arcoiris 2s linear infinite;
+    transform: scale(1.05);
+}
+#teclado button:disabled { background-color: var(--btn-disabled-bg) !important; color: var(--btn-disabled-text); cursor: not-allowed; }
+
+#tpan { grid-column: span 2; background-color: var(--btn-special-bg); font-size: 0.8em; }
+#tcal { grid-column: span 3; background-color: var(--btn-equal-bg); }
+#t0 { grid-column: span 2; }
+.keyboard__button--number { background-color: var(--btn-num-bg); }
+#tmas, #tmen, #tpor, #tdiv, #tc, #tdel { background-color: var(--btn-op-bg); }
+#tpri, #trai { background-color: var(--btn-equal-bg); }
+
+#salida {
+    position: absolute; top: -100%; background-color: #111; width: 100%; height: 100%;
+    transition: top 0.5s ease-in-out; padding: 15px; overflow: auto;
+}
+#salida.output-screen--visible {
+    top: 0;
+}
+
+#divvolver {
+    position: absolute; top: 100%; left: 0; width: 100%;
+    transition: top 0.5s ease-in-out; display: flex; justify-content: space-between;
+    align-items: flex-end; padding: 10px; pointer-events: none;
+}
+#divvolver.bottom-nav--visible {
+    top: 0;
+}
+
+#volver, #botexp, #botnor {
+    pointer-events: all; color: rgba(255, 255, 255, 0.4); background-color: rgba(255, 255, 255, 0.05);
+    padding: 10px; border-radius: 5px; cursor: pointer; transition: all 0.2s;
+}
+#volver:hover, #botexp:hover, #botnor:hover { background-color: rgba(255, 255, 255, 0.1); color: white; }
+#volver { font-family: 'arrow_7regular'; font-size: 1.5rem; }
+#botexp, #botnor { font-family: 'jellyregular'; display: none; }
+
+.output-grid__cell {
+    position: absolute;
+    text-align: center;
+    font-family: 'kurzetstypekurzetstype', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.output-grid__cell--dividendo { color: var(--output-dividendo); }
+.output-grid__cell--divisor { color: var(--output-divisor); }
+.output-grid__cell--cociente { color: var(--output-cociente); }
+.output-grid__cell--producto { color: var(--output-cociente); }
+.output-grid__cell--resto { color: var(--output-resto); }
+.output-grid__cell--suma-intermedia { color: #888; }
+.output-grid__line { position: absolute; background-color: #444; }
+
+.output-screen__error-message { color: var(--output-dividendo); font-size: 1.2rem; text-align: center; padding: 20px; }
+
+#history-toggle-btn {
+    position: fixed; top: 20px; right: 20px; z-index: 1001;
+    background-color: #333; border: 1px solid #555; border-radius: 50%; width: 50px; height: 50px;
+    cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.3s;
+}
+#history-toggle-btn:hover { background-color: var(--btn-equal-bg); transform: scale(1.1); }
+#history-toggle-btn svg { width: 28px; height: 28px; fill: #eee; }
+
+#history-panel {
+    position: fixed; top: 0; right: -100%; width: 350px; max-width: 100vw; height: 100dvh;
+    background-color: var(--history-panel-bg); box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 1000; display: flex; flex-direction: column; transition: right 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+#history-panel.history-panel--open { right: 0; }
+
+.history-header {
+    display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;
+    background-color: var(--history-header-bg); border-bottom: 1px solid var(--history-border-color);
+}
+.history-header h2 { margin: 0; font-size: 1.2em; color: #eee; }
+#clear-history-btn {
+    background: var(--color-title-1); border: none; color: white; padding: 8px 15px; border-radius: 5px;
+    cursor: pointer; font-size: 0.9em; transition: background-color 0.2s;
+}
+#clear-history-btn:hover { background: #e74c3c; }
+
+#history-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; }
+.history-panel__item { padding: 15px 20px; border-bottom: 1px solid #333; cursor: pointer; transition: background-color 0.2s; }
+.history-panel__item:hover { background-color: #2c3e50; }
+.history-panel__input { display: block; font-size: 1.1em; color: #ecf0f1; margin-bottom: 5px; font-family: monospace; word-wrap: break-word; }
+.history-panel__result { display: block; font-size: 1.3em; color: var(--btn-equal-bg); font-weight: bold; text-align: right; font-family: monospace; }
+
+@keyframes flash-animation { 0% { background-color: #2c3e50; } 50% { background-color: #3498db; } 100% { background-color: #2c3e50; } }
+.history-item-highlight { animation: flash-animation 1.5s ease-in-out; }
+
+@keyframes fade-in-scale { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+.animate-fade-in-scale { animation: fade-in-scale 0.5s ease-out forwards; }
+
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.pulse { animation: pulse 0.5s ease-in-out; }
+
+@media (max-width: 600px) {
+    body { padding: 10px; }
+    #contenedor { width: 100% !important; max-width: none !important; }
+    #cuerpoteclado { width: 100% !important; }
+    header h1 { font-size: 12vw !important; }
+    header .subtitle { font-size: 3.5vw !important; }
+    #display { font-size: 10vw !important; padding: 15px; }
+    #teclado button { font-size: 6vw; }
+    #volver { font-size: 7vw !important; }
+    #botexp, #botnor { font-size: 3.5vw !important; padding: 8px; }
+    .output-screen__error-message { font-size: 4.5vw !important; }
+}
+
+@media (max-width: 400px) {
+    body { padding: 8px; }
+    header { margin-bottom: 15px; }
+    header h1 { font-size: 10vw !important; }
+    header .subtitle { font-size: 3.2vw !important; }
+    #display { font-size: 9.5vw !important; padding: 12px; min-height: 50px; }
+    #teclado button { font-size: 5.5vw; }
+    #volver { font-size: 6vw !important; }
+    #botexp, #botnor { font-size: 3.2vw !important; padding: 7px; }
+    .output-screen__error-message { font-size: 4vw !important; }
+}
+
+
+
+https://hectordanielayarachifuentes.github.io/Calculadora-Facundo-V5/
+
+aca podes ver la ultima version de la calculadora con mas versiones, notese que la version ha cambiado, esta es la ultima version pero sin el lector de numeros.
+
+https://github.com/HectorDanielAyarachiFuentes
+
+ese es mi github ahi, podran ver mas cosas xd.
+
+
+
+*/
