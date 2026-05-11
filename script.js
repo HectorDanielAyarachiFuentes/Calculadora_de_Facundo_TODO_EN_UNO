@@ -1994,9 +1994,8 @@ async function handleAction(action) {
         case 'hide-screen':
             subirteclado();
             break;
-        case 'divide-expanded':
-        case 'divide-normal':
-            divext = (action === 'divide-expanded');
+        case 'toggle-division':
+            divext = !divext;
             if (lastDivisionState.operacionInput) {
                 await reExecuteOperationFromHistory(lastDivisionState.operacionInput);
             } else {
@@ -2131,8 +2130,8 @@ function bajarteclado() {
 
 function actualizarEstadoDivisionUI(esDivisionValida) {
     if (esDivisionValida) {
-        botExp.style.display = divext ? "none" : "inline-block";
-        botNor.style.display = divext ? "inline-block" : "none";
+        botExp.style.display = divext ? "inline-block" : "none";
+        botNor.style.display = divext ? "none" : "inline-block";
     }
     else if (botExp && botNor) { 
         botExp.style.display = "none";
