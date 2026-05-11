@@ -124,7 +124,7 @@ header .subtitle a:hover {
     margin-bottom: 15px;
     min-height: 65px;
     word-wrap: break-word;
-    /* CORRECCIÓN: Se mantiene el flujo normal, como indicaba el código original */
+    box-sizing: border-box; /* Asegura que el padding se descuente del width, igualando al teclado */
     margin-left: 0;
 }
 
@@ -132,6 +132,7 @@ header .subtitle a:hover {
     position: relative;
     background-color: var(--bg-keyboard);
     width: 100%;
+    max-width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: 10px;
