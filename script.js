@@ -172,14 +172,17 @@ function calculateLayout(container, gridWidthInCells, gridHeightInRows) {
     const tamFuente = tamCel * multiplicadorTamFuente;
 
     const totalBlockWidth = gridWidthInCells * tamCel;
+    const totalBlockHeight = gridHeightInRows * tamCel;
+    
     const offsetHorizontal = (availableWidth - totalBlockWidth) / 2;
+    const offsetVertical = (availableHeight - totalBlockHeight) / 2;
 
     return {
         tamCel,
         tamFuente,
         offsetHorizontal,
         paddingLeft,
-        paddingTop
+        paddingTop: paddingTop + offsetVertical // Añadimos el offset para centrado vertical
     };
 }
 

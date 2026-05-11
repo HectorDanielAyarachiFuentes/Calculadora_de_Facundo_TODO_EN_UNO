@@ -166,16 +166,16 @@ header .subtitle a:hover {
     width: 100vw !important;
     max-width: none !important;
     height: 100dvh !important;
-    max-height: none !important; /* LIBERAR el límite del 60vh anterior */
+    max-height: none !important;
     aspect-ratio: auto !important;
     border-radius: 0 !important;
     z-index: 9999 !important;
-    overflow: hidden !important; /* Prohibir scroll para que se vea "completo" */
+    overflow: hidden !important;
     background-color: var(--bg-main) !important;
     display: flex;
     flex-direction: column;
-}
-    flex-direction: column;
+    /* Respetar muescas/notch en móviles modernos */
+    padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
 }
 
 /* Ocultar el teclado real cuando estamos en modo zoom para ver solo la cuenta */
@@ -184,12 +184,22 @@ header .subtitle a:hover {
 }
 
 /* Asegurar que el área de salida ocupe todo el visor en modo zoom */
+/* Ajustes específicos de salida para el modo expandido */
 #cuerpoteclado.cuerpoteclado--zoomed #salida {
-    height: 100dvh !important;
-    max-height: none !important;
-    padding: 20px; /* Menos padding para aprovechar más espacio */
-    display: block; /* Volver a block para que el algoritmo posicione bien */
-    overflow: hidden !important; /* Prohibir scroll si queremos que se vea "completo" */
+    height: 100% !important;
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    padding: 0;
+}
+
+/* Botones de navegación más grandes en móvil dentro del modo zoom */
+#cuerpoteclado.cuerpoteclado--zoomed .nav-btn {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 28px !important;
 }
 
 /* Eliminado el transform: scale que causaba el scroll innecesario */
