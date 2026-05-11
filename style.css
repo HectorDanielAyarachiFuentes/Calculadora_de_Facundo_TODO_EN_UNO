@@ -655,9 +655,9 @@ header .subtitle a:hover {
     overflow: hidden; /* Necesario para el reflejo interno */
 }
 
-/* En móviles y tablets, eliminamos la rotación 3D para que el scroll se sienta natural y dejamos el botón de borrar siempre visible */
+/* En móviles y tablets, eliminamos la rotación 3D pero permitimos que la animación de "subida al cielo" funcione */
 @media (max-width: 600px) {
-    .history-panel__item {
+    .history-panel__item:not(.history-disintegrate) {
         transform: none !important;
         transition: background-color 0.3s !important;
     }
