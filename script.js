@@ -1707,6 +1707,12 @@ class HistoryManagerClass {
         HistoryPanel.highlightLastItem();
     }
 
+    removeItem(index) {
+        this.history.splice(index, 1);
+        this.saveHistory();
+        HistoryPanel.renderHistory();
+    }
+
     getHistory() { return this.history; }
 
     clearAll() {
@@ -1755,12 +1761,17 @@ class HistoryPanelClass {
         }
     }
 
-    confirmAndClear() {
+    confirmAction(title, message, onConfirmCallback) {
         const modal = document.getElementById('custom-modal');
         const btnConfirm = document.getElementById('modal-confirm');
         const btnCancel = document.getElementById('modal-cancel');
+        const modalTitle = modal.querySelector('h3');
+        const modalText = modal.querySelector('p');
 
         if (!modal || !btnConfirm || !btnCancel) return;
+
+        modalTitle.textContent = title;
+        modalText.textContent = message;
 
         const showModal = () => {
             modal.classList.add('modal--open');
@@ -1771,7 +1782,7 @@ class HistoryPanelClass {
         };
 
         const onConfirm = () => {
-            HistoryManager.clearAll();
+            onConfirmCallback();
             hideModal();
             cleanup();
         };
@@ -1793,11 +1804,19 @@ class HistoryPanelClass {
             modal.removeEventListener('click', onOverlayClick);
         };
 
-        btnConfirm.addEventListener('click', onConfirm);
-        btnCancel.addEventListener('click', onCancel);
+        btnConfirm.addEventListener('click', onConfirm, { once: true });
+        btnCancel.addEventListener('click', onCancel, { once: true });
         modal.addEventListener('click', onOverlayClick);
         
         showModal();
+    }
+
+    confirmAndClear() {
+        this.confirmAction(
+            '¿Limpiar Historial?',
+            '¿Estás seguro de que quieres borrar todo el historial? Esta acción no se puede deshacer.',
+            () => HistoryManager.clearAll()
+        );
     }
 
     renderHistory() {
@@ -1808,13 +1827,47 @@ class HistoryPanelClass {
             li.className = 'history-panel__item';
             li.dataset.index = index;
             li.innerHTML = `
-                <span class="history-panel__input">${item.input}</span>
-                <span class="history-panel__result">= ${item.result}</span>
+                <div class="history-item-content">
+                    <span class="history-panel__input">${item.input}</span>
+                    <span class="history-panel__result">= ${item.result}</span>
+                </div>
+                <div class="history-item-actions">
+                    <button class="history-btn history-btn--delete" title="Borrar cuenta">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19V4M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg>
+                    </button>
+                </div>
             `;
-            li.addEventListener('click', async () => {
+
+            // Micro-interacción: Iluminación Especular Dinámica
+            li.addEventListener('mousemove', (e) => {
+                const rect = li.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                li.style.setProperty('--mouse-x', `${x}px`);
+                li.style.setProperty('--mouse-y', `${y}px`);
+            });
+
+            // Clic en el contenido: ver pantalla
+            li.querySelector('.history-item-content').addEventListener('click', async (e) => {
                 await reExecuteOperationFromHistory(item.input);
                 this.close();
             });
+
+            // Clic en borrar: confirmación y luego animación
+            li.querySelector('.history-btn--delete').addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.confirmAction(
+                    '¿Eliminar cuenta?',
+                    '¿Estás seguro de que quieres borrar esta operación del historial?',
+                    () => {
+                        li.classList.add('history-disintegrate');
+                        setTimeout(() => {
+                            HistoryManager.removeItem(index);
+                        }, 700);
+                    }
+                );
+            });
+
             this.list.appendChild(li);
         });
     }
