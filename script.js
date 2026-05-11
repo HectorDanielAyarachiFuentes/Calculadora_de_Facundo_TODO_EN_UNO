@@ -880,6 +880,28 @@ function calculateShortDivisionSteps(dividendoStr, divisorStr) {
     };
 }
 
+function crearCierreFinal(left, top, width, height) {
+    const svgNS = "http://www.w3.org/2000/svg";
+    const s = document.createElementNS(svgNS, "svg");
+    s.setAttribute("width", width);
+    s.setAttribute("height", height * 1.5);
+    s.style.position = "absolute";
+    s.style.left = `${left}px`;
+    s.style.top = `${top}px`;
+    s.style.overflow = "visible";
+
+    const drop = Math.min(height * 0.4, width * 0.3);
+    const p = document.createElementNS(svgNS, "path");
+    p.setAttribute("d", `M ${width * 0.1} ${height * 0.85} L ${width * 0.5} ${height * 0.85 + drop} L ${width * 0.9} ${height * 0.85}`);
+    p.setAttribute("stroke", "var(--output-caja-4)");
+    p.setAttribute("stroke-width", "3");
+    p.setAttribute("fill", "none");
+    p.setAttribute("stroke-linecap", "round");
+    p.setAttribute("stroke-linejoin", "round");
+    s.appendChild(p);
+    return s;
+}
+
 function drawHeader(fragment, { divisorStr, cociente, tamCel, tamFuente, offsetHorizontal, paddingLeft, paddingTop, xBloqueDerecho, anchoIzquierdo, separatorWidth }) {
     const yPosTopRow = paddingTop;
     const yPosCociente = paddingTop + tamCel;
@@ -926,7 +948,7 @@ function drawHeader(fragment, { divisorStr, cociente, tamCel, tamFuente, offsetH
 function renderFullDivisionSteps(fragment, displaySteps, { tamCel, tamFuente, offsetHorizontal, paddingLeft, paddingTop, signColumnOffset }, dividendoStr, cocienteStr) {
     const decimalPointIndexInCociente = cocienteStr.indexOf('.');
     
-    displaySteps.forEach(step => {
+    displaySteps.forEach((step, index) => {
         const yStart = paddingTop + step.row * tamCel;
         const clase = `output-grid__cell output-grid__cell--${step.type}`;
 
@@ -974,13 +996,16 @@ function renderFullDivisionSteps(fragment, displaySteps, { tamCel, tamFuente, of
                     width: `${step.text.length * tamCel}px`, 
                     height: `2px`
                 }));
+            } else if (step.type === 'resto' && index === displaySteps.length - 1) {
+                const finalWidth = step.text.length * tamCel;
+                fragment.appendChild(crearCierreFinal(xStart, yStart, finalWidth, tamCel));
             }
         }
     });
 }
 
 function renderShortDivisionSteps(fragment, displaySteps, { tamCel, tamFuente, offsetHorizontal, paddingLeft, paddingTop, signColumnOffset }) {
-    displaySteps.forEach(step => {
+    displaySteps.forEach((step, index) => {
         const yStart = paddingTop + step.row * tamCel;
         const clase = `output-grid__cell output-grid__cell--${step.type}`;
 
@@ -995,6 +1020,11 @@ function renderShortDivisionSteps(fragment, displaySteps, { tamCel, tamFuente, o
                 height: `${tamCel}px`, 
                 fontSize: `${tamFuente}px`
             }));
+        }
+
+        if (step.type === 'resto' && index === displaySteps.length - 1) {
+            const finalWidth = step.text.length * tamCel;
+            fragment.appendChild(crearCierreFinal(xStart, yStart, finalWidth, tamCel));
         }
     });
 }
