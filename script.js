@@ -45,7 +45,8 @@ const errorMessages = {
 // --- INICIO: Contenido de utils/dom-helpers.js ---
 // =======================================================
 
-const esperar = ms => new Promise(res => setTimeout(res, ms));
+let skipAnimations = false;
+const esperar = ms => new Promise(res => setTimeout(res, skipAnimations ? 0 : ms));
 
 function crearCelda(classNames, content, styles) {
     const celda = document.createElement('div');
@@ -2024,6 +2025,29 @@ async function handleAction(action) {
         case 'hide-screen':
             subirteclado();
             break;
+        case 'toggle-zoom': {
+            const cuerpo = document.getElementById("cuerpoteclado");
+            cuerpo.classList.toggle('cuerpoteclado--zoomed');
+            
+            const btnZoom = document.getElementById('bot-zoom');
+            if (cuerpo.classList.contains('cuerpoteclado--zoomed')) {
+                btnZoom.innerHTML = '&#8601;'; 
+                btnZoom.title = "Reducir";
+            } else {
+                btnZoom.innerHTML = '&#9974;';
+                btnZoom.title = "Expandir";
+            }
+
+            const history = HistoryManager.getHistory();
+            if (history.length > 0) {
+                setTimeout(async () => {
+                    skipAnimations = true;
+                    await reExecuteOperationFromHistory(history[0].input);
+                    skipAnimations = false;
+                }, 400); 
+            }
+            break;
+        }
         case 'toggle-division':
             divext = !divext;
             if (lastDivisionState.operacionInput) {

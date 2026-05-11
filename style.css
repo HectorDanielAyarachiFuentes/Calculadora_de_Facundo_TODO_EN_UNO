@@ -96,6 +96,19 @@ header .subtitle a:hover { color: var(--color-title-2); }
 #cuerpoteclado {
     position: relative; background-color: var(--bg-keyboard); width: 100%; aspect-ratio: 1 / 1;
     overflow: hidden; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#cuerpoteclado.cuerpoteclado--zoomed {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+    z-index: 3000 !important;
+    aspect-ratio: auto !important;
 }
 
 /* --- Teclado y Botones --- */
@@ -150,11 +163,11 @@ header .subtitle a:hover { color: var(--color-title-2); }
     top: 0;
 }
 
-#volver, #botexp, #botnor {
+#volver, #botexp, #botnor, #bot-zoom {
     pointer-events: all; color: rgba(255, 255, 255, 0.4); background-color: rgba(255, 255, 255, 0.05);
     padding: 10px; border-radius: 5px; cursor: pointer; transition: all 0.2s;
 }
-#volver:hover, #botexp:hover, #botnor:hover { background-color: rgba(255, 255, 255, 0.1); color: white; }
+#volver:hover, #botexp:hover, #botnor:hover, #bot-zoom:hover { background-color: rgba(255, 255, 255, 0.1); color: white; }
 #volver { font-family: 'arrow_7regular'; font-size: 1.5rem; }
 #botexp, #botnor { font-family: 'jellyregular'; display: none; }
 
@@ -338,6 +351,7 @@ header .subtitle a:hover { color: var(--color-title-2); }
     #teclado button { font-size: 6vw; }
     #volver { font-size: 7vw; }
     #botexp, #botnor { font-size: 3.5vw; padding: 8px; }
+    #bot-zoom { font-size: 4vw !important; padding: 8px 12px !important; }
     .output-screen__error-message { font-size: 4.5vw; padding-top: 25%; }
     #salida { font-size: 5vw; }
     .output-grid__cell { font-size: 8vw; }
@@ -356,6 +370,7 @@ header .subtitle a:hover { color: var(--color-title-2); }
     #teclado button { font-size: 5.5vw; }
     #volver { font-size: 6vw; }
     #botexp, #botnor { font-size: 3.2vw; padding: 7px; }
+    #bot-zoom { font-size: 3.5vw !important; padding: 7px 10px !important; }
     .output-screen__error-message { font-size: 4vw; }
     .output-grid__cell { font-size: 7vw; }
 }
