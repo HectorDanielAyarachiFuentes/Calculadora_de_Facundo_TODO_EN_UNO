@@ -746,16 +746,29 @@ header .subtitle a:hover {
     transform: scale(1.1);
 }
 
-/* Animación de Desintegración Atmosférica */
+/* Animación "Al Cielo": El elemento asciende, se encoge y se desvanece */
 .history-disintegrate {
-    animation: disintegrate 0.7s forwards cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation: go-to-sky 0.8s forwards cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
+    z-index: 100;
 }
 
-@keyframes disintegrate {
-    0% { transform: scale(1); opacity: 1; filter: blur(0); }
-    30% { transform: scale(1.05); filter: blur(2px); background: rgba(231, 76, 60, 0.1); }
-    100% { transform: scale(0.8) translateY(-30px); opacity: 0; filter: blur(20px); }
+@keyframes go-to-sky {
+    0% { 
+        transform: translateY(0) scale(1); 
+        opacity: 1; 
+        filter: blur(0);
+        box-shadow: 0 0 0px rgba(77, 232, 157, 0);
+    }
+    20% {
+        transform: translateY(10px) scale(1.02);
+        background: rgba(231, 76, 60, 0.2);
+    }
+    100% { 
+        transform: translateY(-500px) scale(0.5); 
+        opacity: 0; 
+        filter: blur(4px);
+    }
 }
 
 .history-panel__item:hover {

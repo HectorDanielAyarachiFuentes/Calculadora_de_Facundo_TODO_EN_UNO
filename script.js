@@ -1863,7 +1863,7 @@ class HistoryPanelClass {
                         li.classList.add('history-disintegrate');
                         setTimeout(() => {
                             HistoryManager.removeItem(index);
-                        }, 700);
+                        }, 800);
                     }
                 );
             });
@@ -1945,7 +1945,14 @@ class HistoryPanelClass {
     }
 
     handleOutsideClick(event) {
-        if (this.isOpen() && !this.panel.contains(event.target) && !this.toggleButton.contains(event.target)) {
+        const modal = document.getElementById('custom-modal');
+        const isClickInsideModal = modal && modal.contains(event.target);
+        
+        if (this.isOpen() && 
+            !this.panel.contains(event.target) && 
+            !this.toggleButton.contains(event.target) &&
+            !isClickInsideModal
+        ) {
             this.close();
         }
     }
