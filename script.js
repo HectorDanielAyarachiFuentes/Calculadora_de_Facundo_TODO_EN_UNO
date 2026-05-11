@@ -1756,9 +1756,48 @@ class HistoryPanelClass {
     }
 
     confirmAndClear() {
-        if (window.confirm('¿Estás seguro de que quieres borrar todo el historial?\n\nEsta acción no se puede deshacer.')) {
+        const modal = document.getElementById('custom-modal');
+        const btnConfirm = document.getElementById('modal-confirm');
+        const btnCancel = document.getElementById('modal-cancel');
+
+        if (!modal || !btnConfirm || !btnCancel) return;
+
+        const showModal = () => {
+            modal.classList.add('modal--open');
+        };
+
+        const hideModal = () => {
+            modal.classList.remove('modal--open');
+        };
+
+        const onConfirm = () => {
             HistoryManager.clearAll();
-        }
+            hideModal();
+            cleanup();
+        };
+
+        const onCancel = () => {
+            hideModal();
+            cleanup();
+        };
+
+        const onOverlayClick = (e) => {
+            if (e.target === modal) {
+                onCancel();
+            }
+        };
+
+        const cleanup = () => {
+            btnConfirm.removeEventListener('click', onConfirm);
+            btnCancel.removeEventListener('click', onCancel);
+            modal.removeEventListener('click', onOverlayClick);
+        };
+
+        btnConfirm.addEventListener('click', onConfirm);
+        btnCancel.addEventListener('click', onCancel);
+        modal.addEventListener('click', onOverlayClick);
+        
+        showModal();
     }
 
     renderHistory() {

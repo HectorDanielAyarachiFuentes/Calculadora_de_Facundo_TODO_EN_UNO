@@ -847,6 +847,152 @@ header .subtitle a:hover {
 }
 
 
+/* --- MODAL PERSONALIZADO --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.modal--open {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #111 100%);
+    padding: 40px;
+    border-radius: 28px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(77, 232, 157, 0.05);
+    transform: scale(0.8) translateY(30px);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden; /* Para el brillo líquido */
+}
+
+/* Brillo Líquido que recorre el modal */
+.modal-content::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.03) 45%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 255, 255, 0.03) 55%,
+        transparent 100%
+    );
+    transform: rotate(30deg);
+    animation: modalShimmer 4s infinite linear;
+    pointer-events: none;
+}
+
+@keyframes modalShimmer {
+    0% { left: -150%; }
+    100% { left: 150%; }
+}
+
+.modal-overlay.modal--open .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.modal-icon {
+    font-size: 55px;
+    margin-bottom: 20px;
+    display: inline-block;
+    animation: iconPulse 2s infinite ease-in-out;
+}
+
+@keyframes iconPulse {
+    0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 0px rgba(255, 204, 0, 0)); }
+    50% { transform: scale(1.1) rotate(5deg); filter: drop-shadow(0 0 15px rgba(255, 204, 0, 0.5)); }
+    100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 0px rgba(255, 204, 0, 0)); }
+}
+
+.modal-content h3 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-family: var(--font-ui);
+}
+
+.modal-content p {
+    color: #aaa;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 12px 25px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-ui);
+}
+
+.modal-btn--cancel {
+    background: #333;
+    color: #fff;
+}
+
+.modal-btn--cancel:hover {
+    background: #444;
+    transform: translateY(-2px);
+}
+
+.modal-btn--confirm {
+    background: var(--color-title-2); /* Verde */
+    color: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-btn--confirm::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s;
+}
+
+.modal-btn--confirm:hover::after {
+    left: 150%;
+    transition: all 0.5s;
+}
+
 /* --- ANIMACIONES --- */
 @keyframes flash-animation {
     0% {

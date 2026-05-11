@@ -92,6 +92,19 @@
             <!-- Las entradas del historial se añadirán aquí con JS -->
         </ul>
     </div>
+
+    <!-- Modal de Confirmación Personalizado -->
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">⚠️</div>
+            <h3>¿Limpiar Historial?</h3>
+            <p>¿Estás seguro de que quieres borrar todo el historial? Esta acción no se puede deshacer.</p>
+            <div class="modal-buttons">
+                <button id="modal-cancel" class="modal-btn modal-btn--cancel">Cancelar</button>
+                <button id="modal-confirm" class="modal-btn modal-btn--confirm">Aceptar</button>
+            </div>
+        </div>
+    </div>
     
     <!-- Guarda el código JS unificado en un archivo llamado "script.js" y enlázalo aquí -->
     <script src="script.js"></script>
