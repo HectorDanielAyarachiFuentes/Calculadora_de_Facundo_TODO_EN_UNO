@@ -2044,9 +2044,19 @@ async function handleAction(action) {
             break;
         case 'toggle-zoom': {
             const cuerpo = document.getElementById("cuerpoteclado");
+            const btnZoom = document.getElementById('bot-zoom');
+            
+            // Calcular coordenadas del botón para el efecto Portal
+            if (btnZoom) {
+                const rect = btnZoom.getBoundingClientRect();
+                const x = rect.left + rect.width / 2;
+                const y = rect.top + rect.height / 2;
+                cuerpo.style.setProperty('--zoom-x', `${x}px`);
+                cuerpo.style.setProperty('--zoom-y', `${y}px`);
+            }
+
             cuerpo.classList.toggle('cuerpoteclado--zoomed');
             
-            const btnZoom = document.getElementById('bot-zoom');
             if (cuerpo.classList.contains('cuerpoteclado--zoomed')) {
                 btnZoom.innerHTML = '&#8601;'; 
                 btnZoom.title = "Reducir";

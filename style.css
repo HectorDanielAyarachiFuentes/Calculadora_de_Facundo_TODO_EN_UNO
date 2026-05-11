@@ -159,7 +159,7 @@ header .subtitle a:hover {
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 10;
     flex-shrink: 1;
     max-height: 60vh;
@@ -186,8 +186,16 @@ header .subtitle a:hover {
     background-color: var(--bg-main) !important;
     display: flex;
     flex-direction: column;
-    /* Respetar muescas/notch en móviles modernos */
     padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
+    
+    /* El efecto extraordinario: Expansión circular desde el botón */
+    clip-path: circle(0% at var(--zoom-x, 50%) var(--zoom-y, 50%));
+    animation: portalExpand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes portalExpand {
+    0% { clip-path: circle(0% at var(--zoom-x, 50%) var(--zoom-y, 50%)); filter: blur(10px); }
+    100% { clip-path: circle(150% at var(--zoom-x, 50%) var(--zoom-y, 50%)); filter: blur(0); }
 }
 
 /* Ocultar el teclado real cuando estamos en modo zoom para ver solo la cuenta */
