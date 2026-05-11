@@ -223,18 +223,40 @@ header .subtitle a:hover { color: var(--color-title-2); }
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px env(safe-area-inset-right, 20px) 15px env(safe-area-inset-left, 20px);
+    padding: 0 85px 0 25px; /* right: 85px (para dejar lugar al botón), left: 25px */
     background-color: var(--history-header-bg);
     border-bottom: 1px solid var(--history-border-color);
-    padding-right: 90px;
+    min-height: 90px;
 }
-.history-header h2 { margin: 0; font-size: 1.2em; color: #eee; }
+.history-header h2 { 
+    margin: 0; 
+    font-size: 1.3em; 
+    color: #e0e0e0;
+    font-family: 'Fredoka One', cursive, monospace;
+    letter-spacing: 0.5px;
+}
 
 #clear-history-btn {
-    background: #c0392b; border: none; color: white; padding: 8px 15px; border-radius: 5px;
-    cursor: pointer; font-size: 0.9em; transition: background-color 0.2s;
+    background: transparent;
+    border: 1px solid #555;
+    color: #aaa;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
 }
-#clear-history-btn:hover { background: #e74c3c; }
+#clear-history-btn:hover { 
+    background: rgba(255, 255, 255, 0.1); 
+    color: #fff;
+    border-color: #888;
+}
+#clear-history-btn:active {
+    background: rgba(255, 255, 255, 0.2);
+}
 
 #history-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; }
 .history-panel__item {
