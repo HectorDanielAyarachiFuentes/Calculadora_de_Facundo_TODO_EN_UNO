@@ -256,6 +256,44 @@ header .subtitle a:hover { color: var(--color-title-2); }
 }
 
 /* ============================================== */
+/* --- DISEÑO RESPONSIVE PARA TABLETS --- */
+/* ============================================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+    body { 
+        padding: 40px 0; 
+        align-items: stretch; 
+    }
+    #contenedor {
+        width: 80vw;
+        max-width: 80vw;
+        margin: 0 auto;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    header h1 { font-size: 5vw; }
+    header .subtitle { font-size: 2vw; }
+    #display { 
+        width: 100%;
+        font-size: 6vw; 
+        padding: 20px; 
+        min-height: 80px; 
+        line-height: normal; 
+        overflow: visible; 
+        margin-bottom: 20px;
+    }
+    #cuerpoteclado { 
+        width: 100% !important; 
+        aspect-ratio: auto !important; 
+        flex: 1; 
+    }
+    #teclado button { font-size: 3.5vw; }
+    #volver { font-size: 3.5vw; }
+    .output-grid__cell { font-size: 3.5vw; }
+    .output-screen__error-message { font-size: 3vw; }
+}
+
+/* ============================================== */
 /* --- DISEÑO RESPONSIVE PARA MÓVILES --- */
 /* ============================================== */
 @media (max-width: 600px) {
