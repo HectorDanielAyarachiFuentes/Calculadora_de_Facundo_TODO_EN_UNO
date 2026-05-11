@@ -338,7 +338,7 @@ header .subtitle a:hover {
 #botnor {
     font-family: 'jellyregular';
     display: none;
-    padding: 0 20px;
+    padding: 0 20px !important; /* !important para anular el padding asimétrico del navegador */
     justify-content: center !important;
     align-items: center !important;
     text-align: center;
