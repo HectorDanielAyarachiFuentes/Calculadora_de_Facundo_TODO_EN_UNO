@@ -2091,11 +2091,20 @@ async function handleAction(action) {
 // --- LÓGICA DE LA APLICACIÓN ---
 function escribir(t) {
     const currentDisplay = display.innerHTML;
+    const isComplexOp = currentDisplay.includes('(');
     const isOperator = ['+', '-', 'x', '/'].includes(t);
     const hasBinaryOperatorInExpression = /[+\-x/]/.test(currentDisplay.slice(currentDisplay.startsWith('-') ? 1 : 0).replace(/^[0-9,]+/, ''));
 
     if (t === "c") {
         display.innerHTML = "0";
+    } else if (isComplexOp) {
+        if (t === "del") {
+            display.innerHTML = "0";
+        } else if (/^[0-9]$/.test(t)) {
+            display.innerHTML = t;
+        } else {
+            return;
+        }
     } else if (t === "del") {
         display.innerHTML = currentDisplay.slice(0, -1) || "0";
     }
