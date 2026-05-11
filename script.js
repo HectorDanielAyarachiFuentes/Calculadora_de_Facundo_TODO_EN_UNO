@@ -2043,11 +2043,12 @@ async function handleAction(action) {
 
             const history = HistoryManager.getHistory();
             if (history.length > 0) {
+                // Ahora es instantáneo para que el cálculo de dimensiones sea perfecto
                 setTimeout(async () => {
                     skipAnimations = true;
                     await reExecuteOperationFromHistory(history[0].input);
                     skipAnimations = false;
-                }, 400); 
+                }, 50); 
             }
             break;
         }

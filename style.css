@@ -41,14 +41,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100dvh;
+    height: 100dvh; /* Altura dinámica del viewport */
+    overflow: hidden; /* Prohíbe el scroll vertical como pidió el usuario */
     background-color: var(--bg-main);
     background-image:
         repeating-linear-gradient(90deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px),
         repeating-linear-gradient(0deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px);
-    padding: 20px;
+    padding: 2vh; /* Padding basado en altura */
     font-family: var(--font-ui);
-    /* Todo usa Poppins por defecto */
     color: #fff;
 }
 
@@ -64,24 +64,28 @@ button {
     opacity: 0;
     transition: opacity 1s;
     width: 100%;
-    max-width: 480px;
-    /* Estilo por defecto para alinear en escritorio y dar aire a los lados */
-    padding-left: 1em;
-    padding-right: 1em;
+    max-width: 450px; /* Ancho máximo ideal y armónico */
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Centrado total de hijos */
+    padding: 0 20px;
 }
 
 /* --- Header Mejorado --- */
 header {
-    margin-bottom: 25px;
+    margin-bottom: 1vh; /* Reducido al mínimo */
     text-align: center;
+    flex-shrink: 0;
 }
 
 header h1 {
     font-family: var(--font-title);
-    font-size: 2rem;
+    font-size: clamp(1rem, 4vh, 1.8rem); /* Más pequeño para dar espacio */
     font-weight: bold;
     line-height: 1;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     color: var(--color-title-1);
     text-transform: uppercase;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
@@ -92,9 +96,9 @@ header h1 span {
 }
 
 header .subtitle {
-    font-size: 0.8rem;
+    font-size: clamp(0.6rem, 2vh, 0.8rem);
     color: var(--color-title-1);
-    margin-top: 15px;
+    margin-top: 1vh;
     opacity: 0.8;
 }
 
@@ -117,28 +121,41 @@ header .subtitle a:hover {
     color: var(--color-display-text);
     text-align: right;
     width: 100%;
-    padding: 20px;
-    font-size: 2.2rem;
+    max-width: 100%; /* Bloqueado al contenedor */
+    height: 12vh;
+    min-height: 70px;
+    font-size: clamp(1.8rem, 8vh, 3rem);
     overflow: hidden;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    min-height: 65px;
+    border-radius: 12px;
+    margin-bottom: 12px;
     word-wrap: break-word;
-    box-sizing: border-box; /* Asegura que el padding se descuente del width, igualando al teclado */
-    margin-left: 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 #cuerpoteclado {
     position: relative;
     background-color: var(--bg-keyboard);
     width: 100%;
-    max-width: 100%;
+    max-width: 100%; /* PROHIBIDO desbordar el contenedor */
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Transición suave para el zoom */
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1),
     z-index: 10;
+    flex-shrink: 1;
+    max-height: 60vh;
+}
+
+/* Transición instantánea para el modo zoom para evitar errores de cálculo de tamaño */
+#cuerpoteclado.cuerpoteclado--zoomed {
+    transition: none !important;
 }
 
 /* --- Estado Expandido (Zoom) --- */
@@ -149,10 +166,33 @@ header .subtitle a:hover {
     width: 100vw !important;
     max-width: none !important;
     height: 100dvh !important;
+    max-height: none !important; /* LIBERAR el límite del 60vh anterior */
     aspect-ratio: auto !important;
     border-radius: 0 !important;
     z-index: 9999 !important;
+    overflow: hidden !important; /* Prohibir scroll para que se vea "completo" */
+    background-color: var(--bg-main) !important;
+    display: flex;
+    flex-direction: column;
 }
+    flex-direction: column;
+}
+
+/* Ocultar el teclado real cuando estamos en modo zoom para ver solo la cuenta */
+#cuerpoteclado.cuerpoteclado--zoomed #teclado {
+    display: none !important;
+}
+
+/* Asegurar que el área de salida ocupe todo el visor en modo zoom */
+#cuerpoteclado.cuerpoteclado--zoomed #salida {
+    height: 100dvh !important;
+    max-height: none !important;
+    padding: 20px; /* Menos padding para aprovechar más espacio */
+    display: block; /* Volver a block para que el algoritmo posicione bien */
+    overflow: hidden !important; /* Prohibir scroll si queremos que se vea "completo" */
+}
+
+/* Eliminado el transform: scale que causaba el scroll innecesario */
 
 /* --- Teclado y Botones --- */
 #teclado {
@@ -173,7 +213,7 @@ header .subtitle a:hover {
 }
 
 #teclado button {
-    font-size: 1.4rem;
+    font-size: clamp(1rem, 4vh, 1.4rem); /* Escala con la altura de la pantalla */
     color: var(--btn-text-color);
     cursor: pointer;
     display: flex;
