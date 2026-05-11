@@ -655,13 +655,7 @@ header .subtitle a:hover {
     overflow: hidden; /* Necesario para el reflejo interno */
 }
 
-/* En móviles y tablets, eliminamos la rotación 3D pero permitimos que la animación de "subida al cielo" funcione */
-@media (max-width: 600px) {
-    .history-panel__item:not(.history-disintegrate) {
-        transform: none !important;
-        transition: background-color 0.3s !important;
-    }
-}
+/* --- ELIMINADO BLOQUE REDUNDANTE PARA EVITAR CONFLICTOS --- */
 
 
 
@@ -857,8 +851,12 @@ header .subtitle a:hover {
 /* --- DISEÑO RESPONSIVE PARA MÓVILES --- */
 /* ============================================== */
 @media (max-width: 600px) {
+    /* En móviles y tablets, eliminamos la rotación 3D pero permitimos que la animación de "subida al cielo" funcione */
+    .history-panel__item:not(.history-disintegrate) {
+        transform: none !important;
+        transition: background-color 0.3s !important;
+    }
 
-    /* Padding 0 en los costados para que ocupe todo el ancho */
     body {
         padding: env(safe-area-inset-top, 20px) 0 env(safe-area-inset-bottom, 20px) 0;
         align-items: stretch;
@@ -899,14 +897,6 @@ header .subtitle a:hover {
         font-size: 6vw;
     }
 
-    #volver {
-        /* Se remueve override para mantener proporción px estricta */
-    }
-
-    #bot-zoom {
-        /* Se remueve override para mantener proporción px estricta */
-    }
-
     #bot-zoom {
         font-size: 6vw;
     }
@@ -925,6 +915,9 @@ header .subtitle a:hover {
     }
 }
 
+/* ============================================== */
+/* --- DISEÑO PARA CELULARES PEQUEÑOS --- */
+/* ============================================== */
 @media (max-width: 400px) {
     body {
         padding: env(safe-area-inset-top, 10px) 0 env(safe-area-inset-bottom, 10px) 0;
@@ -952,7 +945,7 @@ header .subtitle a:hover {
     }
 
     header h1 {
-        font-size: 8vw; /* Un poco más pequeño para dejar aire al display */
+        font-size: 8vw;
     }
 
     header .subtitle {
@@ -961,10 +954,10 @@ header .subtitle a:hover {
     }
 
     #display {
-        font-size: 11vw; /* Números más grandes y claros */
+        font-size: 11vw;
         padding: 20px;
         min-height: 80px;
-        height: 12vh; /* Altura más generosa */
+        height: 12vh;
         border-radius: 0;
         display: flex;
         align-items: center;
@@ -973,14 +966,6 @@ header .subtitle a:hover {
 
     #teclado button {
         font-size: 5.5vw;
-    }
-
-    #volver {
-        /* Se remueve override para mantener proporción px estricta */
-    }
-
-    #bot-zoom {
-        /* Se remueve override para mantener proporción px estricta */
     }
 
     #bot-zoom {
