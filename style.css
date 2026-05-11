@@ -655,6 +655,16 @@ header .subtitle a:hover {
     overflow: hidden; /* Necesario para el reflejo interno */
 }
 
+/* En móviles y tablets, eliminamos la rotación 3D para que el scroll se sienta natural y dejamos el botón de borrar siempre visible */
+@media (max-width: 600px) {
+    .history-panel__item {
+        transform: none !important;
+        transition: background-color 0.3s !important;
+    }
+}
+
+
+
 /* Reflejo Especular Dinámico (Sigue al mouse) */
 .history-panel__item::after {
     content: "";
@@ -689,41 +699,50 @@ header .subtitle a:hover {
     transform: translateZ(30px);
 }
 
+/* --- ACCIONES DEL ITEM (Bote de Basura) --- */
 .history-item-actions {
     display: flex;
     gap: 10px;
-    opacity: 0;
-    transform: translateZ(40px) scale(0.8); /* El botón flota aún más cerca */
+    opacity: 1; /* Siempre visible por defecto */
+    transform: translateZ(40px) scale(1);
     transition: all 0.4s ease;
+    z-index: 10;
 }
 
-.history-panel__item:hover .history-item-actions {
-    opacity: 1;
-    transform: translateZ(40px) scale(1);
+/* Solo en Computadora con mouse se oculta para aparecer al pasar el puntero */
+@media (hover: hover) and (min-width: 1025px) {
+    .history-item-actions {
+        opacity: 0;
+        transform: translateZ(40px) scale(0.8);
+    }
+    .history-panel__item:hover .history-item-actions {
+        opacity: 1;
+        transform: translateZ(40px) scale(1);
+    }
 }
 
 .history-btn {
-    background: rgba(231, 76, 60, 0.2);
-    border: 1px solid rgba(231, 76, 60, 0.3);
-    width: 40px;
-    height: 40px;
+    background: rgba(231, 76, 60, 0.9); /* Rojo más sólido y visible */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 48px; /* Tamaño ideal para dedos */
+    height: 48px;
     border-radius: 50%;
-    color: #e74c3c;
+    color: #fff; /* Icono blanco para máximo contraste */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
 
 .history-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
 }
 
 .history-btn--delete:hover {
-    background: rgba(231, 76, 60, 0.3);
-    color: #e74c3c;
+    background: #ff4d4d;
     transform: scale(1.1);
 }
 
