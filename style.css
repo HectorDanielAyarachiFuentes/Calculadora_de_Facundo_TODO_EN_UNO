@@ -65,8 +65,9 @@ button {
     transition: opacity 1s;
     width: 100%;
     max-width: 480px;
-    /* CORRECCIÓN: Estilo por defecto para alinear en escritorio */
+    /* Estilo por defecto para alinear en escritorio y dar aire a los lados */
     padding-left: 1em;
+    padding-right: 1em;
 }
 
 /* --- Header Mejorado --- */
@@ -283,6 +284,7 @@ header .subtitle a:hover {
     align-items: flex-end;
     padding: 10px;
     pointer-events: none;
+    gap: 12px; /* Forzar separación mínima entre el botón J y los demás */
 }
 
 #divvolver.bottom-nav--visible {
@@ -306,6 +308,7 @@ header .subtitle a:hover {
     align-items: center;
     height: 48px; /* Altura estricta para todos */
     box-sizing: border-box;
+    flex-shrink: 0; /* Prohíbe terminantemente que los botones se encojan y deformen */
 }
 
 .nav-btn:hover {
@@ -324,9 +327,10 @@ header .subtitle a:hover {
 /* --- Botón Volver (J) --- */
 #volver {
     font-family: 'arrow_7regular';
-    font-size: 1.5rem;
+    font-size: 24px; /* Tamaño estricto en px para caja de 48px */
     width: 48px; /* Cuadrado perfecto */
     padding: 0;
+    line-height: 1;
 }
 
 /* --- Botones de Extender/Desextender División --- */
@@ -334,15 +338,25 @@ header .subtitle a:hover {
 #botnor {
     font-family: 'jellyregular';
     display: none;
-    padding: 0 16px; /* Estos llevan texto, así que necesitan padding lateral */
-    font-size: 0.9rem;
+    padding: 0 20px;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center;
+}
+
+#botexp span,
+#botnor span {
+    font-size: 13px;
     letter-spacing: 0.5px;
+    white-space: normal; 
+    line-height: 1.1;
+    text-align: center;
 }
 
 /* --- Botón Zoom Especial --- */
 #bot-zoom {
     font-family: var(--font-ui);
-    font-size: 1.4rem;
+    font-size: 22px; /* Tamaño estricto en px para caja de 48px */
     font-weight: bold;
     width: 48px; /* Cuadrado perfecto, IDÉNTICO a #volver */
     padding: 0;
@@ -642,17 +656,15 @@ header .subtitle a:hover {
     }
 
     #volver {
-        font-size: 7vw;
+        /* Se remueve override para mantener proporción px estricta */
+    }
+
+    #bot-zoom {
+        /* Se remueve override para mantener proporción px estricta */
     }
 
     #bot-zoom {
         font-size: 6vw;
-    }
-
-    #botexp,
-    #botnor {
-        font-size: 3.5vw;
-        padding: 8px;
     }
 
     .output-screen__error-message {
@@ -716,17 +728,15 @@ header .subtitle a:hover {
     }
 
     #volver {
-        font-size: 6vw;
+        /* Se remueve override para mantener proporción px estricta */
+    }
+
+    #bot-zoom {
+        /* Se remueve override para mantener proporción px estricta */
     }
 
     #bot-zoom {
         font-size: 5vw;
-    }
-
-    #botexp,
-    #botnor {
-        font-size: 3.2vw;
-        padding: 7px;
     }
 
     .output-screen__error-message {

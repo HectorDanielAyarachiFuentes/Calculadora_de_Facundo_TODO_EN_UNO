@@ -2208,8 +2208,8 @@ function bajarteclado() {
 
 function actualizarEstadoDivisionUI(esDivisionValida) {
     if (esDivisionValida) {
-        botExp.style.display = divext ? "inline-block" : "none";
-        botNor.style.display = divext ? "none" : "inline-block";
+        botExp.style.display = divext ? "flex" : "none";
+        botNor.style.display = divext ? "none" : "flex";
     }
     else if (botExp && botNor) { 
         botExp.style.display = "none";
