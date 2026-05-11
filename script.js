@@ -1954,10 +1954,10 @@ function handleKeyboardInput(event) {
     }
 
     const key = event.key;
-    if (/[0-9+\-*/=.,cC]/.test(key) || ['Enter', 'Backspace', 'Delete', 'Escape', 'x', 'X'].includes(key)) {
+    if (/^[0-9+\-*/=.,cC]$/.test(key) || ['Enter', 'Backspace', 'Delete', 'Escape', 'x', 'X'].includes(key)) {
         event.preventDefault();
     }
-    if (/[0-9]/.test(key)) escribir(key);
+    if (/^[0-9]$/.test(key)) escribir(key);
     else if (key === '+') escribir('+');
     else if (key === '-') escribir('-');
     else if (key === '*' || key === 'x' || key === 'X') escribir('x');
