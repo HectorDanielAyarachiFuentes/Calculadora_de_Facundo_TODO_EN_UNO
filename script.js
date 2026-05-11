@@ -1727,6 +1727,9 @@ class HistoryPanelClass {
     }
 
     addEventListeners() {
+        if (this.eventsBound) return;
+        this.eventsBound = true;
+
         if (this.toggleButton) {
             this.toggleButton.addEventListener('click', (e) => {
                 e.stopPropagation();
