@@ -46,7 +46,18 @@ const errorMessages = {
 // =======================================================
 
 let skipAnimations = false;
-const esperar = ms => new Promise(res => setTimeout(res, skipAnimations ? 0 : ms));
+let currentCalculationId = 0; // Identificador único para la operación actual
+
+const esperar = ms => new Promise((res, rej) => {
+    const myId = currentCalculationId;
+    setTimeout(() => {
+        if (myId !== currentCalculationId) {
+            rej("Aborted"); // Lanzar rechazo para detener la ejecución async
+        } else {
+            res();
+        }
+    }, skipAnimations ? 0 : ms);
+});
 
 function crearCelda(classNames, content, styles) {
     const celda = document.createElement('div');
@@ -2163,17 +2174,27 @@ async function calcular(addToHistory = true) {
     
     bajarteclado();
     salida.innerHTML = "";
+    
+    // Incrementar ID para cancelar cualquier operación previa que esté en curso
+    currentCalculationId++;
 
-    switch (operador) {
-        case "+": await suma(numerosAR); break;
-        case "-": await resta(numerosAR); break;
-        case "x": await multiplica(numerosAR); break;
-        case "/":
-            lastDivisionState = { operacionInput: entrada, numerosAR, tipo: 'division' };
-            divext ? await divideExt(numerosAR) : await divide(numerosAR);
-            break;
-        default:
-            salida.appendChild(crearMensajeError(errorMessages.invalidOperation));
+    try {
+        switch (operador) {
+            case "+": await suma(numerosAR); break;
+            case "-": await resta(numerosAR); break;
+            case "x": await multiplica(numerosAR); break;
+            case "/":
+                lastDivisionState = { operacionInput: entrada, numerosAR, tipo: 'division' };
+                divext ? await divideExt(numerosAR) : await divide(numerosAR);
+                break;
+            default:
+                salida.appendChild(crearMensajeError(errorMessages.invalidOperation));
+        }
+    } catch (error) {
+        if (error === "Aborted") {
+            return; // Detención silenciosa
+        }
+        throw error;
     }
     
     const calculationError = salida.querySelector('.output-screen__error-message');
