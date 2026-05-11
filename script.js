@@ -2208,8 +2208,21 @@ async function calcular(addToHistory = true) {
 
 function subirteclado() {
     teclado.classList.remove('keyboard--hidden');
+    teclado.classList.add('keyboard--reentry');
+    
+    // Efecto cascada (onda) para los botones
+    const botones = teclado.querySelectorAll('button');
+    botones.forEach((btn, index) => {
+        btn.style.animationDelay = `${index * 30}ms`; // 30ms de diferencia entre cada botón
+        btn.classList.add('button--pop');
+    });
+
     salida.classList.remove('output-screen--visible');
     divVolver.classList.remove('bottom-nav--visible');
+    
+    // Pulso visual en el display con ligero zoom
+    display.classList.add('display--highlight');
+    setTimeout(() => display.classList.remove('display--highlight'), 600);
     
     // Asegurarnos de quitar el zoom al volver al teclado
     const cuerpo = document.getElementById("cuerpoteclado");
@@ -2221,6 +2234,15 @@ function subirteclado() {
             btnZoom.title = "Expandir";
         }
     }
+
+    // Limpiar clases y estilos después de la animación
+    setTimeout(() => {
+        teclado.classList.remove('keyboard--reentry');
+        botones.forEach(btn => {
+            btn.classList.remove('button--pop');
+            btn.style.animationDelay = '';
+        });
+    }, 1200);
 
     activadoBotones(display.innerHTML); 
 }
