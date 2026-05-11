@@ -759,7 +759,7 @@ header .subtitle a:hover {
     }
 
     header h1 {
-        font-size: 10vw;
+        font-size: 8vw; /* Un poco más pequeño para dejar aire al display */
     }
 
     header .subtitle {
@@ -768,10 +768,14 @@ header .subtitle a:hover {
     }
 
     #display {
-        font-size: 9.5vw;
-        padding: 12px;
-        min-height: 50px;
+        font-size: 11vw; /* Números más grandes y claros */
+        padding: 20px;
+        min-height: 80px;
+        height: 12vh; /* Altura más generosa */
         border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
     }
 
     #teclado button {
