@@ -274,34 +274,73 @@ header .subtitle a:hover {
     top: 0;
 }
 
-#volver,
-#botexp,
-#botnor {
+/* --- Botones de Navegación (Glassmorphism Unificado y Armónico) --- */
+.nav-btn {
     pointer-events: all;
-    color: rgba(255, 255, 255, 0.4);
-    background-color: rgba(255, 255, 255, 0.05);
-    padding: 10px;
-    border-radius: 5px;
+    background: rgba(25, 25, 25, 0.55); /* Oscuro semi-transparente */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px; /* Curvatura suave y moderna */
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.25, 1.5, 0.5, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px; /* Altura estricta para todos */
+    box-sizing: border-box;
 }
 
-#volver:hover,
-#botexp:hover,
-#botnor:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 15px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
+.nav-btn:active {
+    transform: translateY(1px) scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Botón Volver (J) --- */
 #volver {
     font-family: 'arrow_7regular';
     font-size: 1.5rem;
+    width: 48px; /* Cuadrado perfecto */
+    padding: 0;
 }
 
+/* --- Botones de Extender/Desextender División --- */
 #botexp,
 #botnor {
     font-family: 'jellyregular';
     display: none;
+    padding: 0 16px; /* Estos llevan texto, así que necesitan padding lateral */
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+/* --- Botón Zoom Especial --- */
+#bot-zoom {
+    font-family: var(--font-ui);
+    font-size: 1.4rem;
+    font-weight: bold;
+    width: 48px; /* Cuadrado perfecto, IDÉNTICO a #volver */
+    padding: 0;
+    /* Ya no tiene border verde por defecto para mantener la armonía */
+}
+
+/* Efecto hover especial para el zoom (brillo verde) */
+#bot-zoom:hover {
+    background: rgba(77, 232, 157, 0.2);
+    transform: translateY(-3px) scale(1.08);
+    box-shadow: 0 8px 25px rgba(77, 232, 157, 0.4);
+    border-color: var(--color-title-2);
+    color: #fff;
 }
 
 
@@ -591,6 +630,10 @@ header .subtitle a:hover {
         font-size: 7vw;
     }
 
+    #bot-zoom {
+        font-size: 6vw;
+    }
+
     #botexp,
     #botnor {
         font-size: 3.5vw;
@@ -659,6 +702,10 @@ header .subtitle a:hover {
 
     #volver {
         font-size: 6vw;
+    }
+
+    #bot-zoom {
+        font-size: 5vw;
     }
 
     #botexp,
