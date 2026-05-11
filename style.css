@@ -135,6 +135,21 @@ header .subtitle a:hover {
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Transición suave para el zoom */
+    z-index: 10;
+}
+
+/* --- Estado Expandido (Zoom) --- */
+#cuerpoteclado.cuerpoteclado--zoomed {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    max-width: none !important;
+    height: 100dvh !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    z-index: 9999 !important;
 }
 
 /* --- Teclado y Botones --- */

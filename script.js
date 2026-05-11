@@ -2185,6 +2185,18 @@ function subirteclado() {
     teclado.classList.remove('keyboard--hidden');
     salida.classList.remove('output-screen--visible');
     divVolver.classList.remove('bottom-nav--visible');
+    
+    // Asegurarnos de quitar el zoom al volver al teclado
+    const cuerpo = document.getElementById("cuerpoteclado");
+    if (cuerpo && cuerpo.classList.contains('cuerpoteclado--zoomed')) {
+        cuerpo.classList.remove('cuerpoteclado--zoomed');
+        const btnZoom = document.getElementById('bot-zoom');
+        if (btnZoom) {
+            btnZoom.innerHTML = '&#9974;';
+            btnZoom.title = "Expandir";
+        }
+    }
+
     activadoBotones(display.innerHTML); 
 }
 
