@@ -61,7 +61,7 @@ const esperar = ms => new Promise((res, rej) => {
 
 function crearCelda(classNames, content, styles) {
     const celda = document.createElement('div');
-    celda.className = classNames;
+    celda.className = skipAnimations ? classNames.replace('animate-fade-in-scale', '').trim() : classNames;
     celda.textContent = content;
     
     celda.style.position = "absolute"; 
@@ -85,8 +85,10 @@ function crearCelda(classNames, content, styles) {
 
 function crearCeldaAnimada(classNames, content, styles, delay = 0) {
     const celda = crearCelda(classNames, content, styles); 
-    celda.classList.add('animate-fade-in-scale');
-    celda.style.animationDelay = `${delay}ms`;
+    if (!skipAnimations) {
+        celda.classList.add('animate-fade-in-scale');
+        celda.style.animationDelay = `${delay}ms`;
+    }
     return celda;
 }
 
@@ -133,7 +135,7 @@ function crearFlechaLlevada(left, top, width, height) {
     const l = h.getTotalLength();
     h.style.strokeDasharray = l;
     h.style.strokeDashoffset = l;
-    h.style.transition = "stroke-dashoffset .8s cubic-bezier(0.68, -0.55, 0.27, 1.55)";
+    h.style.transition = skipAnimations ? "none" : "stroke-dashoffset .8s cubic-bezier(0.68, -0.55, 0.27, 1.55)";
     requestAnimationFrame(() => {
         h.style.strokeDashoffset = "0";
     });
@@ -364,7 +366,7 @@ async function suma(numerosAR) {
         celdaFinal.style.opacity = '0';
         salida.appendChild(celdaFinal);
         setTimeout(() => {
-            celdaFinal.style.transition = 'opacity 0.5s ease-in';
+            celdaFinal.style.transition = skipAnimations ? 'none' : 'opacity 0.5s ease-in';
             celdaFinal.style.opacity = '1';
         }, 100);
     });
@@ -383,7 +385,7 @@ let animationLoopId = null;
 
 async function startBorrowLoopAnimation(elements) {
     if (animationLoopId) clearTimeout(animationLoopId);
-    if (elements.length === 0) return;
+    if (elements.length === 0 || skipAnimations) return;
 
     const loop = async () => {
         for (const element of elements) {
@@ -441,7 +443,7 @@ function crearTachadoAnimado(styles) {
     Object.assign(line.style, {
         position: 'absolute', backgroundColor: '#e84d4d', height: '2px',
         transform: 'rotate(-25deg)', transformOrigin: 'left center',
-        transition: 'width 0.3s ease-out', width: '0px', ...styles
+        transition: skipAnimations ? 'none' : 'width 0.3s ease-out', width: '0px', ...styles
     });
     requestAnimationFrame(() => { line.style.width = styles.width; });
     return line;
@@ -1408,7 +1410,7 @@ async function animateSquareRootSteps(container, steps, groups, decimalPos, layo
     const finalResultElements = container.querySelectorAll('.output-grid__cell--cociente');
     
     finalResultElements.forEach(el => {
-        el.style.transition = 'color 0.4s ease, font-weight 0.4s ease';
+        el.style.transition = skipAnimations ? 'none' : 'color 0.4s ease, font-weight 0.4s ease';
         el.style.color = '#ffc107';
         el.style.fontWeight = 'bold';
     });
@@ -1454,7 +1456,7 @@ function showOperationPlaceholder(container, step, rootXStart, yPos, tamFuente) 
         position: 'absolute',
         whiteSpace: 'nowrap',
         color: '#ddd',
-        transition: 'all 0.3s ease'
+        transition: skipAnimations ? 'none' : 'all 0.3s ease'
     });
     container.appendChild(opCell);
     return opCell;
@@ -1685,12 +1687,17 @@ class HistoryManagerClass {
     async add(item) {
         const duplicateIndex = this.history.findIndex(existingItem => existingItem.input === item.input);
         if (duplicateIndex !== -1) {
-            alert('¡Oye! Ya has realizado esta operación antes. ¡Mira el historial!');
+            // Mover al principio para que sea la "última operación" real
+            const [duplicateItem] = this.history.splice(duplicateIndex, 1);
+            this.history.unshift(duplicateItem);
+            this.saveHistory();
+            HistoryPanel.renderHistory();
+
             if (!HistoryPanel.isOpen()) {
                 HistoryPanel.open();
             }
-            HistoryPanel.highlightItem(duplicateIndex);
-            await reExecuteOperationFromHistory(this.history[duplicateIndex].input);
+            HistoryPanel.highlightItem(0); // Ahora está en el índice 0
+            await reExecuteOperationFromHistory(this.history[0].input);
             return;
         }
 
@@ -2008,6 +2015,7 @@ const HistoryPanel = new HistoryPanelClass();
 // --- VARIABLES DE ESTADO ---
 let w;
 let divext = false;
+let currentActiveOperation = '';
 let lastDivisionState = {
     operacionInput: '',
     numerosAR: null,
@@ -2088,6 +2096,7 @@ function handleKeyboardInput(event) {
 }
 
 async function reExecuteOperationFromHistory(historyInput) {
+    currentActiveOperation = historyInput;
     bajarteclado();
     salida.innerHTML = "";
 
@@ -2164,12 +2173,11 @@ async function handleAction(action) {
                 btnZoom.title = "Expandir";
             }
 
-            const history = HistoryManager.getHistory();
-            if (history.length > 0) {
+            if (currentActiveOperation) {
                 // Ahora es instantáneo para que el cálculo de dimensiones sea perfecto
                 setTimeout(async () => {
                     skipAnimations = true;
-                    await reExecuteOperationFromHistory(history[0].input);
+                    await reExecuteOperationFromHistory(currentActiveOperation);
                     skipAnimations = false;
                 }, 50); 
             }
@@ -2281,6 +2289,7 @@ async function calcular(addToHistory = true) {
     const operador = operadorMatch[0];
     const numerosAR = parsearNumeros(entrada, operador);
     
+    currentActiveOperation = entrada;
     bajarteclado();
     salida.innerHTML = "";
     
